@@ -13,7 +13,6 @@ public class Connect {
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/dur?serverTimezone=Europe/Moscow&useSSL=false";
 
 
-
     public void goConnectToSQL() {
 
         try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
@@ -71,10 +70,9 @@ public class Connect {
 //    }
 
 
-
     public ArrayList<User> showUsers() {
         ArrayList<User> users = new ArrayList<>();
-        User user = null;
+        User user;
         try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT  * FROM userstabel");
@@ -83,8 +81,8 @@ public class Connect {
                 int id = resultSet.getInt(1);
                 String name = resultSet.getString(2);
                 String surname = resultSet.getString(3);
-                int age =resultSet.getInt(4);
-                String phoneNumber =resultSet.getString(5);
+                int age = resultSet.getInt(4);
+                String phoneNumber = resultSet.getString(5);
                 user = new User(id, name, surname, age, phoneNumber);
                 users.add(user);
             }
@@ -107,39 +105,88 @@ public class Connect {
 //            s.getSQLState();
 //        }
 //    }
-//
+//public void deleteUser(int userId) {
+//    String sqlDelete = "DELETE FROM UsersTabel WHERE UserId = ?";
+//    try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+//         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete)) {
+//        preparedStatement.setInt(1, userId);
+//        System.out.println("Delete " + userId + " from DB");
+//        int rows = preparedStatement.executeUpdate();
+//        System.out.println(rows + " row was deleted");
+//    } catch (SQLException s) {
+//        s.getSQLState();
+//    }
+//}
+
+
+    //
     public User searchUserFromID(int userId) {
-        String sqlSelect = ("SELECT * FROM dur.UsersTabel WHERE UserId = ?");
-        User res = null;
+        String sqlSelect = "SELECT  * FROM userstabel WHERE UserId = ?";
+        User user = null;
         try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect)) {
             preparedStatement.setInt(1, userId);
             System.out.println("Select " + userId + " from DB");
 
-            ResultSet resultSet= preparedStatement.executeQuery();
-//            while (resultSet.next()){
-//                // System.out.println(resultSet.getString("Password"));
-             int id = resultSet.getInt("UserId");
-            System.out.println(id);
-             String name = resultSet.getNString("UserName");
-             String surname = resultSet.getNString("UserSurname");
-             int age = resultSet.getInt("UserAge");
-             String phoneNumber = resultSet.getNString("UserPhone");
-//
-//                res = "Пользователь #"+resultSet.getNString("UserId") +" "+
-//                        resultSet.getNString("UserSurname")+" "+
-//                        resultSet.getNString("UserName")+" возраст: "+
-//                        resultSet.getNString("UserAge")+" номер телефона:"+
-//                        resultSet.getNString("UserPhone");
-            res = new User(id, name, surname, age, phoneNumber);
-
-//            }
-
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String name = resultSet.getString(2);
+                String surname = resultSet.getString(3);
+                int age = resultSet.getInt(4);
+                String phoneNumber = resultSet.getString(5);
+                user = new User(id, name, surname, age, phoneNumber);
+            }
         } catch (SQLException s) {
             s.getSQLState();
         }
-        return res;
+        return user;
+    }
+
+    public User searchUserFromName(String userName) {
+        String sqlSelect = "SELECT  * FROM userstabel WHERE UserName = ?";
+        User user = null;
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect)) {
+            preparedStatement.setString(1, userName);
+            System.out.println("Select " + userName + " from DB");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String name = resultSet.getString(2);
+                String surname = resultSet.getString(3);
+                int age = resultSet.getInt(4);
+                String phoneNumber = resultSet.getString(5);
+                user = new User(id, name, surname, age, phoneNumber);
+            }
+        } catch (SQLException s) {
+            s.getSQLState();
+        }
+        return user;
+    }
+
+
+    public void changeUserSurnameFronID(int userId, String userSurname) {
+        String sqlSelect = "UPDATE userstabel SET userSurname = ? WHERE userId = ?";
+        User user = null;
+        try {
+            try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+                 PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect)) {
+                preparedStatement.setString(1, userSurname);
+                preparedStatement.setInt(2, userId);
+                System.out.println("Update ID#" + userId + " from DB");
+
+                int rowsUpdated = preparedStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("An existing user id #" + userId + " was updated successfully!");
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }
+
 
 
