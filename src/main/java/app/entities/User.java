@@ -1,8 +1,5 @@
 package app.entities;
 
-import java.util.Objects;
-
-//Учетная запись должна содержать только имя, фамилию,возраст и номер телефона?
 public class User {
     private int id;
     private String name;
@@ -12,8 +9,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "Пользователь №" + getId() + " " + getSurname()+ " "+ getName() + " возраст: "
-                + getAge() + " № телефона: " + getPhoneNumber();
+        return "- Пользователь №" + getId() + ", " + getSurname()+ " "+ getName() + ", возраст: "
+                + getAge() + ", № телефона: " + getPhoneNumber()+".";
     }
 
     public User(int id, String name, String surname, int age, String phoneNumber) {
