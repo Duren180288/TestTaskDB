@@ -107,4 +107,17 @@ public class Connect implements DAO {
             s.getSQLState();
         }
     }
+
+    //    public void getCreate() {
+//        try (Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+//             Statement statement = connection.createStatement()) {
+//            statement.executeUpdate("CREATE TABLE UsersTabel (UserId int auto_increment primary key, " +
+//                    "UserName varchar(30) not null," +
+//                    "UserSurname varchar(30) not null, UserAge int (3) not null," +
+//                    "UserPhone varchar(30) not null)");
+//            System.out.println("Table Users successfully created...");
+//        } catch (SQLException s) {
+//            s.getSQLState();
+//        }
+    //   }
 }
