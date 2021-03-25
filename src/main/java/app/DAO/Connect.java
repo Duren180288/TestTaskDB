@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Connect {
+public class Connect implements DAO {
     private static final String USER = "root";
     private static final String PASSWORD = "180288";
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -19,7 +19,7 @@ public class Connect {
              Statement statement = connection.createStatement()) {
             System.out.println("Registering JDBC driver...");
             System.out.println("Creating connection to database...");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             connect = false;
         }
         return connect;
@@ -45,7 +45,6 @@ public class Connect {
         }
         return users;
     }
-
 
     public User searchUserFromID(int userId) {
         String sqlSelect = "SELECT  * FROM userstabel WHERE UserId = ?";

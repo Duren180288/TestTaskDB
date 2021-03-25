@@ -2,21 +2,18 @@ package app;
 
 import app.entities.User;
 import app.model.Model;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Solution {
     public static void main(String[] args) throws IOException {
         User user;
         List<User> users;
-        Model model = new Model();
         String surname;
 
-        if (!model.getConnection()){
+        if (!Model.getConnection()) {
             System.out.println("Нет связи с БД!");
             System.exit(0);
         }
@@ -41,7 +38,7 @@ public class Solution {
                 }
                 switch (i) {
                     case "1":
-                        users = model.showAgeSortedUsers();
+                        users = Model.showAgeSortedUsers();
                         for (User u : users) {
                             System.out.println(u.toString());
                         }
@@ -50,7 +47,7 @@ public class Solution {
                         System.out.println("Введите ID пользователя: ");
                         try {
                             int id = Integer.parseInt(reader.readLine());
-                            user = model.searchUserFromID(id);
+                            user = Model.searchUserFromID(id);
                             System.out.println(user.toString());
                         } catch (Exception e) {
                             System.out.println("Неверный ID");
@@ -59,7 +56,7 @@ public class Solution {
                     case "3":
                         System.out.println("Введите имя пользователя: ");
                         try {
-                            user = model.searchUserFromName(reader.readLine());
+                            user = Model.searchUserFromName(reader.readLine());
                             System.out.println(user.toString());
                         } catch (Exception e) {
                             System.out.println("Неверное имя");
@@ -69,9 +66,9 @@ public class Solution {
                         System.out.println("Введите ID изменяемой учётной записи ");
                         try {
                             int id = Integer.parseInt(reader.readLine());
-                            user = model.searchUserFromID(id);
+                            user = Model.searchUserFromID(id);
                             System.out.println("Введите новую фамилию для учетной записи №" + user.getId());
-                            user = model.changeUserSurnameFromID(id, reader.readLine());
+                            user = Model.changeUserSurnameFromID(id, reader.readLine());
                             System.out.println("Обновленная учетная запись №" + id + ":");
                             System.out.println(user.toString());
                         } catch (Exception e) {
@@ -94,14 +91,14 @@ public class Solution {
 
                                 System.out.println("Введите фамилию абонента ");
                                 surname = reader.readLine();
-                                users = model.getPhoneNumberFromSurname(surname);
+                                users = Model.getPhoneNumberFromSurname(surname);
                                 for (User u : users) {
                                     System.out.println("- Фамилия: " + u.getSurname() +
                                             " Имя: " + u.getName() + " Номер телефона: " + u.getPhoneNumber());
                                 }
                                 break;
                             case "2":
-                                users = model.getPhoneNumberTabel();
+                                users = Model.getPhoneNumberTabel();
                                 System.out.println("\n---- Телефонный справочник ----");
                                 for (User u : users) {
                                     System.out.println("- Фамилия: " + u.getSurname() +
@@ -111,11 +108,9 @@ public class Solution {
                         }
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         reader.close();
     }
-
 }

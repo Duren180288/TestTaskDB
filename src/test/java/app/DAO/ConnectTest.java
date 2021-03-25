@@ -5,7 +5,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.exceptions.base.MockitoException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +23,7 @@ public class ConnectTest {
     private static User user4;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockedConnect = mock(Connect.class);
 
         user1 = new User(1, "Aleksey", "Iwanow", 44, "1234567");
@@ -32,14 +34,9 @@ public class ConnectTest {
         when(mockedConnect.showUsers()).thenReturn( Arrays.asList(user1, user2, user3, user4));
         when(mockedConnect.searchUserFromID(4)).thenReturn(user4);
         when(mockedConnect.searchUserFromName("Jana")).thenReturn(user3);
+        when(mockedConnect.searchUserFromName("Roma")).thenThrow(new IllegalArgumentException());
         doNothing().when(mockedConnect).changeUserSurnameFromID(1, "Ulanow");
     }
-
-//
-//    @Test
-//    public void goConnectToSQL() {
-//        Assert.assertEquals(4,2+3);
-//    }
 
     @Test
     public void showUsers() {
@@ -51,6 +48,7 @@ public class ConnectTest {
         assertEquals("Sidorowa", user.getSurname());
         assertEquals(22, user.getAge());
         assertEquals("7654321", user.getPhoneNumber());
+
     }
 
     @Test
@@ -67,7 +65,7 @@ public class ConnectTest {
 
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void searchUserFromName() {
         String name = "Jana";
         User user = mockedConnect.searchUserFromName(name);
@@ -78,6 +76,9 @@ public class ConnectTest {
         assertEquals("Petrowa", user.getSurname());
         assertEquals(11, user.getAge());
         assertEquals("9873215", user.getPhoneNumber());
+
+        String name2 = "Roma";
+        mockedConnect.searchUserFromName(name2);
 
 
     }

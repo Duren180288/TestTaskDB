@@ -9,8 +9,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "- Пользователь №" + getId() + ", " + getSurname()+ " "+ getName() + ", возраст: "
-                + getAge() + ", № телефона: " + getPhoneNumber()+".";
+        return "- Пользователь №" + getId() + ", " + getSurname() + " " + getName() + ", возраст: "
+                + getAge() + ", № телефона: " + getPhoneNumber() + ".";
     }
 
     public User(int id, String name, String surname, int age, String phoneNumber) {
@@ -26,7 +26,7 @@ public class User {
     }
 
     public void setId(int id) {
-        this.id =  id;
+        this.id = id;
     }
 
     public String getName() {
